@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:download99@localhost:3306/portfolio"
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  preview_content String
+  content   String @db.LongText
+  timestamp DateTime @default(now())
+  preview_image String
+}
+
+model AdminToken {
+  token String  @id @default(uuid())
+  created_at DateTime @default(now())
+  expired_at DateTime
+}

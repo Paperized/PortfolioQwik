@@ -1,0 +1,122 @@
+import {component$} from "@builder.io/qwik";
+import {routeAction$, zod$, z, Form, routeLoader$} from "@builder.io/qwik-city";
+import {prismaClient} from "~/root";
+
+export const usePost = routeLoader$((requestEvent) => {
+  const postId = +requestEvent.params.postId;
+  return prismaClient.post.findFirst({
+    where: {id: postId}, select: {
+      id: true, title: true, content: true, timestamp: true, preview_content: true, preview_image: true
+    }
+  });
+});
+
+export const useEditPost = routeAction$(async (data, requestEvent) => {
+  const token = requestEvent.cookie.get('token')?.value;
+  if(!token || await prismaClient.adminToken.count({where: {token: token, expired_at: { gt: new Date() }}}) < 1)
+    return requestEvent.fail(401, { error: 'Unauthorized'});
+
+  return prismaClient.post.update({where: {id: +requestEvent.params.postId}, data: data as any, select: { id: true }});
+}, zod$({
+  preview_image: z.string().url("Preview image must be a valid URL"),
+  title: z.string().nonempty("Title cannot be empty"),
+  content: z.string().nonempty("Description cannot be empty"),
+  preview_content: z.string().nonempty("Preview description cannot be empty"),
+}));
+
+export const useDeletePost = routeAction$(async (_, requestEvent) => {
+  const token = requestEvent.cookie.get('token')?.value;
+  if(!token || await prismaClient.adminToken.count({where: {token: token, expired_at: { gt: new Date() }}}) < 1)
+    return requestEvent.fail(401, { error: 'Unauthorized'});
+
+  return prismaClient.post.delete({where: {id: +requestEvent.params.postId}, select: { id: true }});
+});
+
+export default component$(() => {
+  const editPostAction = useEditPost();
+  const deletePostAction = useDeletePost();
+  const post = usePost();
+  //const nav = useNavigate();
+
+  if (post.value == null) {
+    return (
+      <div class="flex flex-col md:w-10/12 mx-auto md:p-10">
+        <h2>Post does not exists!</h2>
+      </div>
+    );
+  }
+
+  return (
+    <div class="flex flex-col md:w-10/12 mx-auto md:p-10">
+      <div class="flex">
+        <h2 class="text-3xl font-semibold mb-4">Edit Post</h2>
+        <button onClick$={async () => {
+          const { value } = await deletePostAction.submit();
+          if(value.id != undefined)
+            window.location.href="/blog";
+            //await nav('/blog');
+        }}>Delete</button>
+      </div>
+      <Form action={editPostAction} class="shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+          <label class="block text-sm font-bold mb-2" for="preview-image-container">Preview Image URL</label>
+          <div id="preview-image-container" class="relative">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5 3a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2H5zm4 4l3 3 4-4M6.5 15l4 4L18 9"></path>
+              </svg>
+            </div>
+            <input
+              class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              name="preview_image" type="text" placeholder="Enter preview image URL" value={post.value?.preview_image}/>
+          </div>
+          {editPostAction.value?.failed && <p>{editPostAction.value.fieldErrors?.preview_image}</p>}
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-bold mb-2" for="title">Title</label>
+          <div id="preview-image-container" class="relative">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                   fill="currentColor">
+                <path d="M8 3h4v2h2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V5c0-1.1.9-2 2-2zm4 2H8v10h8V5h-4V3z"/>
+                <path fill-rule="evenodd"
+                      d="M3 8a1 1 0 011-1h2.586l9.707-9.707a1 1 0 011.414 0l2.586 2.586a1 1 0 010 1.414L8.414 14H6a1 1 0 01-1-1V8z"
+                      clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <input
+              class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              name="title" type="text" placeholder="Enter title" value={post.value?.title}/>
+          </div>
+          {editPostAction.value?.failed && <p>{editPostAction.value.fieldErrors?.title}</p>}
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-bold mb-2" for="preview-description">Preview
+            Description</label>
+          <textarea
+            class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            name="preview_content" placeholder="Enter preview description"
+            value={post.value?.preview_content}></textarea>
+          {editPostAction.value?.failed && <p>{editPostAction.value.fieldErrors?.preview_content}</p>}
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-bold mb-2" for="description">Description</label>
+          <textarea
+            class="min-h-[10rem] block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            name="content" placeholder="Enter description" value={post.value?.content}></textarea>
+          {editPostAction.value?.failed && <p>{editPostAction.value.fieldErrors?.content}</p>}
+        </div>
+        {post.value?.id && <a href={"/blog/posts/" + post.value.id} target="_blank">View Post</a>}
+        <div class="flex items-center justify-between">
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit">
+            Save
+          </button>
+        </div>
+      </Form>
+    </div>
+  );
+});
