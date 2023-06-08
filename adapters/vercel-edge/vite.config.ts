@@ -3,6 +3,14 @@ import { extendConfig } from '@builder.io/qwik-city/vite';
 import baseConfig from '../../vite.config';
 
 export default extendConfig(baseConfig, () => {
+  if(process.env.VERCEL_ENV === 'development')
+    require('dotenv').config({ path: '.env.development.local' });
+  else {
+    console.log("prod!!");
+    require('dotenv').config({path: '.env.production'});
+  }
+
+
   return {
     build: {
       ssr: true,
