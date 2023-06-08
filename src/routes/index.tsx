@@ -8,13 +8,13 @@ import MyExperience from "~/components/my-experience/my-experience";
 import getProjects from "~/data/projects-data";
 import {allColumnExpect} from "~/prisma-utils";
 import {postColumns, PreviewPost} from "~/model/post";
-import {sqlDb} from "~/root";
+import {db} from "~/root";
 
 export const useLatestPostsLoader = routeLoader$(async () => {
-  const {rows} = await sqlDb`SELECT ${allColumnExpect(postColumns(), 'content')}
-                             FROM post
-                             ORDER BY timestamp DESC
-                             LIMIT 6`;
+  const {rows} = await db.sql`SELECT ${allColumnExpect(postColumns(), 'content')}
+                          FROM post
+                          ORDER BY timestamp DESC
+                          LIMIT 6`;
   return rows as PreviewPost[];
 });
 

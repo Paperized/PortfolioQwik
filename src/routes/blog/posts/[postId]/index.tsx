@@ -1,7 +1,7 @@
 import {component$} from "@builder.io/qwik";
 import {Link, routeLoader$} from "@builder.io/qwik-city";
 import ViewPost from "~/components/view-post/view-post";
-import {ormDb, sqlDb} from "~/root";
+import {ormDb, db} from "~/root";
 import {PostTable} from "~/model/post";
 import {eq} from "drizzle-orm";
 
@@ -9,7 +9,7 @@ export const useAdminAuthorization = routeLoader$(async (requestEvent) => {
   // get the token from the cookie
   const token = requestEvent.cookie.get('token')?.value;
   if (!token) return false;
-  return (await sqlDb`SELECT COUNT(*) FROM admin_token WHERE token=${token} AND expired_at > CURRENT_TIMESTAMP`).rowCount >= 1;
+  return (await db.sql`SELECT COUNT(*) FROM admin_token WHERE token=${token} AND expired_at > CURRENT_TIMESTAMP`).rowCount >= 1;
 });
 
 export const usePost = routeLoader$(async(requestEvent) => {

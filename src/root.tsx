@@ -1,16 +1,16 @@
 import {component$, useVisibleTask$} from '@builder.io/qwik';
-import { QwikCityProvider, RouterOutlet, ServiceWorkerRegister } from '@builder.io/qwik-city';
-import { RouterHead } from './components/router-head/router-head';
+import {QwikCityProvider, RouterOutlet, ServiceWorkerRegister} from '@builder.io/qwik-city';
+import {RouterHead} from './components/router-head/router-head';
 
 import './global.css';
-import {sql} from "@vercel/postgres";
+import {createPool} from "@vercel/postgres";
 import {drizzle} from "drizzle-orm/vercel-postgres";
 
 console.log(process.env);
 
-const ormDb = drizzle(sql);
-const sqlDb = sql;
-export {ormDb, sqlDb};
+const db = createPool({ connectionString: process.env.POSTGRES_URL });
+const ormDb = drizzle(db);
+export {ormDb, db};
 
 export default component$(() => {
   useVisibleTask$(() => {

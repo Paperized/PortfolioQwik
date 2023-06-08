@@ -1,6 +1,6 @@
 import {component$} from "@builder.io/qwik";
 import {Form, routeAction$, routeLoader$, z, zod$} from "@builder.io/qwik-city";
-import {ormDb, sqlDb} from "~/root";
+import {ormDb, db} from "~/root";
 import {PostTable} from "~/model/post";
 import {eq} from "drizzle-orm";
 
@@ -12,7 +12,7 @@ export const usePost = routeLoader$(async (requestEvent) => {
 
 export const useEditPost = routeAction$(async (data, requestEvent) => {
   const token = requestEvent.cookie.get('token')?.value;
-  if (!token || (await sqlDb`SELECT COUNT(*)
+  if (!token || (await db.sql`SELECT COUNT(*)
                              FROM admin_token
                              WHERE token = ${token}
                                AND expired_at > CURRENT_TIMESTAMP`).rowCount < 1)
@@ -29,7 +29,7 @@ export const useEditPost = routeAction$(async (data, requestEvent) => {
 
 export const useDeletePost = routeAction$(async (_, requestEvent) => {
   const token = requestEvent.cookie.get('token')?.value;
-  if (!token || (await sqlDb`SELECT COUNT(*)
+  if (!token || (await db.sql`SELECT COUNT(*)
                              FROM admin_token
                              WHERE token = ${token}
                                AND expired_at > CURRENT_TIMESTAMP`).rowCount < 1)

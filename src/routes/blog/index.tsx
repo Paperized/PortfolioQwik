@@ -3,7 +3,7 @@ import {Link, routeLoader$} from "@builder.io/qwik-city";
 import PostList from "~/components/post-list/post-list";
 import {allColumnExpect} from "~/prisma-utils";
 import {postColumns, PreviewPost} from "~/model/post";
-import {sqlDb} from "~/root";
+import {db} from "~/root";
 
 export const usePreviewPosts = routeLoader$(async (requestEvent) => {
   const currentPage = requestEvent.url.searchParams.get('page') || '1';
@@ -11,11 +11,11 @@ export const usePreviewPosts = routeLoader$(async (requestEvent) => {
   if (page < 1) page = 1;
   const postPerPage = 10;
   const skipCount = (page - 1) * postPerPage;
-  const resultPost = await sqlDb`SELECT ${allColumnExpect(postColumns(), 'content')}
-                             FROM post
-                             ORDER BY timestamp DESC
-                             LIMIT ${postPerPage} OFFSET ${skipCount}`;
-  const resultCount = await sqlDb`SELECT COUNT(*) FROM post`;
+  const resultPost = await db.sql`SELECT ${allColumnExpect(postColumns(), 'content')}
+                              FROM post
+                              ORDER BY timestamp DESC
+                              LIMIT ${postPerPage} OFFSET ${skipCount}`;
+  const resultCount = await db.sql`SELECT COUNT(*)FROM post`;
 
   return {posts: resultPost.rows as PreviewPost[], page, count: resultCount.rows[0].count};
 });

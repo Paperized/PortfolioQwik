@@ -1,12 +1,12 @@
 import {component$, useSignal} from "@builder.io/qwik";
 import {Form, routeAction$, z, zod$} from "@builder.io/qwik-city";
 import ViewPost from "~/components/view-post/view-post";
-import {ormDb, sqlDb} from "~/root";
+import {ormDb, db} from "~/root";
 import {PostTable} from "~/model/post";
 
 export const useNewPost = routeAction$(async (data, requestEvent) => {
   const token = requestEvent.cookie.get('token')?.value;
-  if (!token || (await sqlDb`SELECT COUNT(*)
+  if (!token || (await db.sql`SELECT COUNT(*)
                              FROM admin_token
                              WHERE token = ${token}
                                AND expired_at > CURRENT_TIMESTAMP`).rowCount < 1)
