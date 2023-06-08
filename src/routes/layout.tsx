@@ -31,10 +31,10 @@ export default component$(() => {
   useStyles$(styles);
   return (
     <div class="flex flex-col min-h-screen">
-      <div class="px-20 pt-6 pb-4">
+      <div class="px-10 md:px-20 pt-4 md:pt-6 pb-4">
         {!loc.url.pathname.startsWith("/blog") ? <Header/> : <HeaderBlog is_admin={isAdmin.value}/>}
       </div>
-      <main class="flex-auto">
+      <main class="flex-auto md:px-0 px-4">
         <Slot/>
       </main>
       <Footer/>
