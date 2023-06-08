@@ -1,5 +1,5 @@
 import {pgTable, serial, text, timestamp, varchar} from "drizzle-orm/pg-core";
-import { InferModel } from 'drizzle-orm';
+import type { InferModel } from 'drizzle-orm';
 
 export const PostTable = pgTable('post', {
   id: serial('id').primaryKey(),

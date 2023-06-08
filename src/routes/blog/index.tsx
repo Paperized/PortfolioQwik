@@ -1,7 +1,7 @@
 import {component$} from "@builder.io/qwik";
-import {Link, Loader, routeLoader$} from "@builder.io/qwik-city";
+import {Link, routeLoader$} from "@builder.io/qwik-city";
 import PostList from "~/components/post-list/post-list";
-import {allColumnExpect, withPropertiesFrom} from "~/prisma-utils";
+import {allColumnExpect} from "~/prisma-utils";
 import {postColumns, PreviewPost} from "~/model/post";
 import {sqlDb} from "~/root";
 
