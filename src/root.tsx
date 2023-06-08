@@ -6,7 +6,7 @@ import './global.css';
 import {createPool} from "@vercel/postgres";
 import {drizzle} from "drizzle-orm/vercel-postgres";
 
-console.log(process.env);
+console.log("process.env.POSTGRES_URL", process.env.POSTGRES_URL)
 
 const db = createPool({ connectionString: process.env.POSTGRES_URL });
 const ormDb = drizzle(db);
