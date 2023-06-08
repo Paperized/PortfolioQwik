@@ -1,4 +1,4 @@
-import {component$, useSignal} from "@builder.io/qwik";
+import {$, component$, useSignal} from "@builder.io/qwik";
 import {Form, routeAction$, routeLoader$, z, zod$} from "@builder.io/qwik-city";
 import {db, ormDb} from "~/root";
 import {PostTable} from "~/model/post";
@@ -57,6 +57,9 @@ export default component$(() => {
   const title = useSignal(post.value.title);
   const content = useSignal(post.value.content);
   const previewContent = useSignal(post.value.preview_content);
+  const event = { onUpdateContent: $((text: string) => {})};
+
+  const refreshPreview = $(() => event.onUpdateContent(content.value));
 
   return (
     <div class="flex flex-col md:w-10/12 mx-auto md:p-10">
@@ -118,7 +121,7 @@ export default component$(() => {
           <label class="block text-sm font-bold mb-2" for="description">Description</label>
           <textarea
             class="min-h-[10rem] block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            name="content" placeholder="Enter description" bind:value={content}></textarea>
+            name="content" placeholder="Enter description" bind:value={content}  onChange$={refreshPreview}></textarea>
           {editPostAction.value?.failed && <p>{editPostAction.value.fieldErrors?.content}</p>}
         </div>
         {post.value?.id && <a href={"/blog/posts/" + post.value.id} target="_blank">View Post</a>}
@@ -144,7 +147,7 @@ export default component$(() => {
         <ViewPost post={{
           id: 0, title: title.value, content: content.value, preview_image: previewImage.value,
           timestamp: new Date(), preview_content: previewContent.value
-        }}></ViewPost>
+        }} event={event}></ViewPost>
       </div>
     </div>
   );

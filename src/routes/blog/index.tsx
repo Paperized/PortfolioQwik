@@ -1,5 +1,5 @@
 import {component$} from "@builder.io/qwik";
-import {Link, routeLoader$} from "@builder.io/qwik-city";
+import {DocumentHead, Link, routeLoader$} from "@builder.io/qwik-city";
 import PostList from "~/components/post-list/post-list";
 import {PreviewPost} from "~/model/post";
 import {db} from "~/root";
@@ -84,3 +84,21 @@ export default component$(() => {
     </div>
   );
 });
+
+export const head: DocumentHead = {
+  title: 'Paperized - Blog',
+  meta: [
+    {
+      name: 'description',
+      content: 'Paperized Programming Blog, where I write about my experiences and thoughts on programming and software development',
+    },
+    {
+      name: 'robot',
+      content: 'index, follow',
+    },
+    {
+      name: 'og:type',
+      content: 'blog',
+    }
+  ],
+};

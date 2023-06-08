@@ -1,7 +1,7 @@
 import {component$} from "@builder.io/qwik";
-import {Link, routeLoader$} from "@builder.io/qwik-city";
+import {DocumentHead, Link, routeLoader$} from "@builder.io/qwik-city";
 import ViewPost from "~/components/view-post/view-post";
-import {ormDb, db} from "~/root";
+import {db, ormDb} from "~/root";
 import {PostTable} from "~/model/post";
 import {eq} from "drizzle-orm";
 
@@ -9,10 +9,13 @@ export const useAdminAuthorization = routeLoader$(async (requestEvent) => {
   // get the token from the cookie
   const token = requestEvent.cookie.get('token')?.value;
   if (!token) return false;
-  return (await db.sql`SELECT COUNT(*) FROM admin_token WHERE token=${token} AND expires_at > CURRENT_TIMESTAMP`).rowCount >= 1;
+  return (await db.sql`SELECT COUNT(*)
+                       FROM admin_token
+                       WHERE token = ${token}
+                         AND expires_at > CURRENT_TIMESTAMP`).rowCount >= 1;
 });
 
-export const usePost = routeLoader$(async(requestEvent) => {
+export const usePost = routeLoader$(async (requestEvent) => {
   const postId = +requestEvent.params.postId;
   const res = await ormDb.select().from(PostTable).where(eq(PostTable.id, postId));
   return res.length > 0 ? res[0] : null;
@@ -34,7 +37,7 @@ export default component$(() => {
     <div class="flex flex-col md:w-10/12 mx-auto md:p-10">
       {isAdmin.value &&
           <Link href={"/blog/posts/" + post.value.id + "/edit"}
-              class="fixed bottom-8 right-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full floating-button">
+                class="fixed bottom-8 right-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full floating-button">
               <svg xmlns="http://www.w3.org/2000/svg" width="24"
                    height="24"
                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -48,3 +51,48 @@ export default component$(() => {
     </div>
   );
 });
+
+export const head: DocumentHead = (p) => {
+  const post = p.resolveValue(usePost);
+  if (!post) {
+    return {};
+  }
+
+  return {
+    title: post.title,
+    meta: [
+      {
+        name: 'description',
+        content: post.preview_content,
+      },
+      {
+        name: 'robot',
+        content: 'index, follow',
+      },
+      {
+        name: 'og:type',
+        content: 'article',
+      },
+      {
+        name: 'og:title',
+        content: post.title,
+      },
+      {
+        name: 'og:description',
+        content: post.preview_content,
+      },
+      {
+        name: 'og:image',
+        content: post.preview_image ?? '',
+      },
+      {
+        name: 'og:url',
+        content: 'https://blog.qwik.dev/blog/posts/' + post.id,
+      },
+      {
+        name: 'og:site_name',
+        content: 'Paperized Blog',
+      }
+    ],
+  }
+};
