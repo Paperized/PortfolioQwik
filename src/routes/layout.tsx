@@ -34,7 +34,7 @@ export default component$(() => {
       <div class="px-10 md:px-20 pt-4 md:pt-6 pb-4">
         {!loc.url.pathname.startsWith("/blog") ? <Header/> : <HeaderBlog is_admin={isAdmin.value}/>}
       </div>
-      <main class="flex-auto md:px-0 px-4">
+      <main class="flex-auto md:px-0 px-2">
         <Slot/>
       </main>
       <Footer/>

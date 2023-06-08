@@ -28,7 +28,7 @@ export default component$((props: { post: Post, event?: { onUpdateContent: QRL<(
       {props.post.preview_image && (
         <img class="h-60 object-cover object-center mx-auto" src={props.post.preview_image} alt="Image"/>
       )}
-      <div class="p-6">
+      <div class="md:p-6">
         <p class="text-[1.9rem] font-semibold">{props.post.title}</p>
         <p class="text-gray-400 mb-4">{props.post.timestamp?.toDateString()}</p>
         <p id="content-post"></p>
