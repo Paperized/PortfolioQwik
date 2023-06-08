@@ -22,7 +22,7 @@ export default component$(() => {
   const posts = useLatestPostsLoader();
   return (
     <div class="flex flex-col md:w-10/12 mx-auto md:p-10">
-      <div id="introduction" class="flex flex-col items-center md:flex-row md:justify-between md:gap-x-24 py-20">
+      <div id="introduction" class="flex flex-col items-center md:flex-row md:justify-between md:gap-x-24 pt-5 pb-20 md:pt-20">
         <div>
           <p class="text-3xl font-bold pb-1">Hi there, I'm
             <span class="bg-gradient-to-br from-sky-500 to-cyan-400 bg-clip-text text-transparent"> Ivan</span>!

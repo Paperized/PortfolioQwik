@@ -9,15 +9,15 @@ export default component$((props: { projects: Project[] }) => {
           {project.preview_image && (
             <img class="object-contain shrink-0 h-40" src={project.preview_image} alt="Project Image"/>
           )}
-          <div class="pl-6">
-            <div class="flex">
+          <div class={[ project.preview_image ? 'md:pl-6' : '' ]}>
+            <div class="flex flex-wrap gap-x-8">
               <a href={project.link ? project.link : undefined} target="_blank"
                  class={[
                    "font-bold text-xl mb-2",
                     project.link ? "bg-gradient-to-br from-sky-500 to-cyan-400 bg-clip-text text-transparent" : ""
                  ]}>{project.name}</a>
               <span
-                class="bg-gray-200 rounded px-3 py-1 text-sm font-semibold text-gray-700 ml-5 mr-2 mb-2">{project.project_owner}</span>
+                class="bg-gray-200 rounded px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{project.project_owner}</span>
 
             </div>
             <p class="text-base">
