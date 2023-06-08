@@ -53,7 +53,7 @@ function allColumnExpect(cols: string[], ...keys: string[]) {
   for(const key of keys) {
     const index = cols.indexOf(key);
     if(index == -1) {
-      throw new Error(`Property ${key} not found in object`);
+      throw new Error(`Property ${key} not found in object`); 
     }
     cols.splice(index, 1);
   }
