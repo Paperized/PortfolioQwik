@@ -1,22 +1,21 @@
 import {component$} from "@builder.io/qwik";
 import {Link, routeLoader$} from "@builder.io/qwik-city";
 import ViewPost from "~/components/view-post/view-post";
-import {prismaClient} from "~/root";
+import {ormDb, sqlDb} from "~/root";
+import {PostTable} from "~/model/post";
+import {eq} from "drizzle-orm";
 
 export const useAdminAuthorization = routeLoader$(async (requestEvent) => {
   // get the token from the cookie
   const token = requestEvent.cookie.get('token')?.value;
   if (!token) return false;
-  return await prismaClient.adminToken.count({where: {token: token, expired_at: {gt: new Date()}}}) >= 1;
+  return (await sqlDb`SELECT COUNT(*) FROM admin_token WHERE token=${token} AND expired_at > CURRENT_TIMESTAMP`).rowCount >= 1;
 });
 
-export const usePost = routeLoader$((requestEvent) => {
+export const usePost = routeLoader$(async(requestEvent) => {
   const postId = +requestEvent.params.postId;
-  return prismaClient.post.findFirst({
-    where: {id: postId}, select: {
-      id: true, title: true, content: true, timestamp: true, preview_content: true, preview_image: true
-    }
-  });
+  const res = await ormDb.select().from(PostTable).where(eq(PostTable.id, postId));
+  return res.length > 0 ? res[0] : null;
 });
 
 export default component$(() => {

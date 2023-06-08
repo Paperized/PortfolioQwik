@@ -6,7 +6,7 @@ import Footer from '~/components/footer/footer';
 
 import styles from './styles.css?inline';
 import HeaderBlog from "~/components/header/header-blog";
-import {prismaClient} from "~/root";
+import {sqlDb} from "~/root";
 
 export const useServerTimeLoader = routeLoader$(() => {
   return {
@@ -18,7 +18,7 @@ export const useAdminAuthorization = routeLoader$(async (requestEvent) => {
   // get the token from the cookie
   const token = requestEvent.cookie.get('token')?.value;
   if(!token) return false;
-  return await prismaClient.adminToken.count({where: {token: token, expired_at: { gt: new Date() }}}) >= 1;
+  return (await sqlDb`SELECT COUNT(*) FROM admin_token WHERE token=${token} AND expired_at > CURRENT_TIMESTAMP`).rowCount >= 1;
 });
 
 export default component$(() => {

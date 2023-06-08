@@ -3,10 +3,12 @@ import { QwikCityProvider, RouterOutlet, ServiceWorkerRegister } from '@builder.
 import { RouterHead } from './components/router-head/router-head';
 
 import './global.css';
-import {PrismaClient} from "@prisma/client";
+import {sql} from "@vercel/postgres";
+import {drizzle} from "drizzle-orm/vercel-postgres";
 
-const prisma_client = new PrismaClient();
-export {prisma_client as prismaClient};
+const ormDb = drizzle(sql);
+const sqlDb = sql;
+export {ormDb, sqlDb};
 
 export default component$(() => {
   useVisibleTask$(() => {

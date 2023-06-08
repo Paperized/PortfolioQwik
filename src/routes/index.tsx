@@ -1,17 +1,21 @@
 import {component$, useSignal} from '@builder.io/qwik';
-import type {DocumentHead, Loader} from '@builder.io/qwik-city';
+import type {DocumentHead} from '@builder.io/qwik-city';
+import {routeLoader$} from "@builder.io/qwik-city";
 
 import Projects from '~/components/projects/projects';
 import PostList from "~/components/post-list/post-list";
 import MyExperience from "~/components/my-experience/my-experience";
 import getProjects from "~/data/projects-data";
-import {routeLoader$} from "@builder.io/qwik-city";
-import {withPropertiesFrom} from "~/prisma-utils";
-import {PreviewPost} from "~/model/post";
-import {prismaClient} from "~/root";
+import {allColumnExpect} from "~/prisma-utils";
+import {postColumns, PreviewPost} from "~/model/post";
+import {sqlDb} from "~/root";
 
-export const useLatestPostsLoader: Loader<any[]> = routeLoader$( () => {
-  return prismaClient.post.findMany({orderBy: {timestamp: 'desc'}, select: withPropertiesFrom(PreviewPost).build(), take: 6});
+export const useLatestPostsLoader = routeLoader$(async () => {
+  const {rows} = await sqlDb`SELECT ${allColumnExpect(postColumns(), 'content')}
+                             FROM post
+                             ORDER BY timestamp DESC
+                             LIMIT 6`;
+  return rows as PreviewPost[];
 });
 
 export default component$(() => {
@@ -25,8 +29,11 @@ export default component$(() => {
             <span class="bg-gradient-to-br from-sky-500 to-cyan-400 bg-clip-text text-transparent"> Ivan</span>!
           </p>
           <p class="text-xl leading-9">
-            As a software developer with around 1.5 years of experience, I am eager to continue building my skills and contributing to impactful projects.
-            With a focus on backend development and proficiency in programming languages such as Java, C#, and JavaScript, I have a strong foundation in web development and a passion for solving complex problems, I have a strong knowledge of C# and I'm currently learning .NET backend technologies.
+            As a software developer with around 1.5 years of experience, I am eager to continue building my skills and
+            contributing to impactful projects.
+            With a focus on backend development and proficiency in programming languages such as Java, C#, and
+            JavaScript, I have a strong foundation in web development and a passion for solving complex problems, I have
+            a strong knowledge of C# and I'm currently learning .NET backend technologies.
           </p>
           <div class="ml-3 flex gap-1">
             <a class="hover:translate-y-1" href="https://www.linkedin.com/in/ivan-lo-greco/" target="_blank">

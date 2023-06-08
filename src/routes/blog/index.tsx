@@ -1,25 +1,23 @@
 import {component$} from "@builder.io/qwik";
 import {Link, Loader, routeLoader$} from "@builder.io/qwik-city";
 import PostList from "~/components/post-list/post-list";
-import {withPropertiesFrom} from "~/prisma-utils";
-import {PreviewPost} from "~/model/post";
-import {prismaClient} from "~/root";
+import {allColumnExpect, withPropertiesFrom} from "~/prisma-utils";
+import {postColumns, PreviewPost} from "~/model/post";
+import {sqlDb} from "~/root";
 
-export const usePreviewPosts: Loader<{
-  posts: any[],
-  page: number,
-  count: number
-}> = routeLoader$(async (requestEvent) => {
+export const usePreviewPosts = routeLoader$(async (requestEvent) => {
   const currentPage = requestEvent.url.searchParams.get('page') || '1';
   let page = parseInt(currentPage);
   if (page < 1) page = 1;
   const postPerPage = 10;
   const skipCount = (page - 1) * postPerPage;
-  const posts = await prismaClient.post.findMany({
-    orderBy: {timestamp: 'desc'}, select: withPropertiesFrom(PreviewPost).build(), skip: skipCount, take: postPerPage
-  });
-  const count = await prismaClient.post.count();
-  return {posts, page, count};
+  const resultPost = await sqlDb`SELECT ${allColumnExpect(postColumns(), 'content')}
+                             FROM post
+                             ORDER BY timestamp DESC
+                             LIMIT ${postPerPage} OFFSET ${skipCount}`;
+  const resultCount = await sqlDb`SELECT COUNT(*) FROM post`;
+
+  return {posts: resultPost.rows as PreviewPost[], page, count: resultCount.rows[0].count};
 });
 
 export default component$(() => {

@@ -49,4 +49,20 @@ function withoutPropertiesFrom (obj: object | any) {
   return new PropertyBuilder(newObj);
 }
 
-export { PropertyBuilder, withPropertiesFrom, withoutPropertiesFrom };
+function allColumnExpect(cols: string[], ...keys: string[]) {
+  for(const key of keys) {
+    const index = cols.indexOf(key);
+    if(index == -1) {
+      throw new Error(`Property ${key} not found in object`);
+    }
+    cols.splice(index, 1);
+  }
+
+  return cols.join(', ');
+}
+
+function allColumn(cols: string[]) {
+  return cols.join(', ');
+}
+
+export { PropertyBuilder, withPropertiesFrom, withoutPropertiesFrom, allColumnExpect, allColumn };

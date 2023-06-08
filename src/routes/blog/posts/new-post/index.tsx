@@ -1,14 +1,20 @@
 import {component$, useSignal} from "@builder.io/qwik";
 import {Form, routeAction$, z, zod$} from "@builder.io/qwik-city";
 import ViewPost from "~/components/view-post/view-post";
-import {prismaClient} from "~/root";
+import {ormDb, sqlDb} from "~/root";
+import {PostTable} from "~/model/post";
 
 export const useNewPost = routeAction$(async (data, requestEvent) => {
   const token = requestEvent.cookie.get('token')?.value;
-  if (!token || await prismaClient.adminToken.count({where: {token: token, expired_at: {gt: new Date()}}}) < 1)
+  if (!token || (await sqlDb`SELECT COUNT(*)
+                             FROM admin_token
+                             WHERE token = ${token}
+                               AND expired_at > CURRENT_TIMESTAMP`).rowCount < 1)
     return requestEvent.fail(401, {error: 'Unauthorized'});
 
-  return prismaClient.post.create({data: data as any, select: {id: true}});
+  //return ormDb.insert(AdminTokenTable).values({token: token, expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365)}).returning({id: Admin});
+  const res = await ormDb.insert(PostTable).values(data).returning({id: PostTable.id});
+  return res[0];
 }, zod$({
   preview_image: z.string().url("Preview image must be a valid URL"),
   title: z.string().nonempty("Title cannot be empty"),

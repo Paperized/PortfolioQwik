@@ -1,22 +1,25 @@
 import {component$} from "@builder.io/qwik";
-import {routeAction$, zod$, z, Form, routeLoader$} from "@builder.io/qwik-city";
-import {prismaClient} from "~/root";
+import {Form, routeAction$, routeLoader$, z, zod$} from "@builder.io/qwik-city";
+import {ormDb, sqlDb} from "~/root";
+import {PostTable} from "~/model/post";
+import {eq} from "drizzle-orm";
 
-export const usePost = routeLoader$((requestEvent) => {
+export const usePost = routeLoader$(async (requestEvent) => {
   const postId = +requestEvent.params.postId;
-  return prismaClient.post.findFirst({
-    where: {id: postId}, select: {
-      id: true, title: true, content: true, timestamp: true, preview_content: true, preview_image: true
-    }
-  });
+  const res = await ormDb.select().from(PostTable).where(eq(PostTable.id, postId));
+  return res.length > 0 ? res[0] : null;
 });
 
 export const useEditPost = routeAction$(async (data, requestEvent) => {
   const token = requestEvent.cookie.get('token')?.value;
-  if(!token || await prismaClient.adminToken.count({where: {token: token, expired_at: { gt: new Date() }}}) < 1)
-    return requestEvent.fail(401, { error: 'Unauthorized'});
+  if (!token || (await sqlDb`SELECT COUNT(*)
+                             FROM admin_token
+                             WHERE token = ${token}
+                               AND expired_at > CURRENT_TIMESTAMP`).rowCount < 1)
+    return requestEvent.fail(401, {error: 'Unauthorized'});
 
-  return prismaClient.post.update({where: {id: +requestEvent.params.postId}, data: data as any, select: { id: true }});
+  const res = await ormDb.update(PostTable).set(data).where(eq(PostTable.id, +requestEvent.params.postId)).returning({id: PostTable.id});
+  return res.length > 0 ? res[0] : null;
 }, zod$({
   preview_image: z.string().url("Preview image must be a valid URL"),
   title: z.string().nonempty("Title cannot be empty"),
@@ -26,10 +29,14 @@ export const useEditPost = routeAction$(async (data, requestEvent) => {
 
 export const useDeletePost = routeAction$(async (_, requestEvent) => {
   const token = requestEvent.cookie.get('token')?.value;
-  if(!token || await prismaClient.adminToken.count({where: {token: token, expired_at: { gt: new Date() }}}) < 1)
-    return requestEvent.fail(401, { error: 'Unauthorized'});
+  if (!token || (await sqlDb`SELECT COUNT(*)
+                             FROM admin_token
+                             WHERE token = ${token}
+                               AND expired_at > CURRENT_TIMESTAMP`).rowCount < 1)
+    return requestEvent.fail(401, {error: 'Unauthorized'});
 
-  return prismaClient.post.delete({where: {id: +requestEvent.params.postId}, select: { id: true }});
+  const res = await ormDb.delete(PostTable).where(eq(PostTable.id, +requestEvent.params.postId)).returning({id: PostTable.id});
+  return res.length > 0 ? res[0] : null;
 });
 
 export default component$(() => {
@@ -51,11 +58,12 @@ export default component$(() => {
       <div class="flex">
         <h2 class="text-3xl font-semibold mb-4">Edit Post</h2>
         <button onClick$={async () => {
-          const { value } = await deletePostAction.submit();
-          if(value.id != undefined)
-            window.location.href="/blog";
-            //await nav('/blog');
-        }}>Delete</button>
+          const {value} = await deletePostAction.submit();
+          if (value.id != undefined)
+            window.location.href = "/blog";
+          //await nav('/blog');
+        }}>Delete
+        </button>
       </div>
       <Form action={editPostAction} class="shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-4">
