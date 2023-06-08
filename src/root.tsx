@@ -6,6 +6,8 @@ import './global.css';
 import {sql} from "@vercel/postgres";
 import {drizzle} from "drizzle-orm/vercel-postgres";
 
+console.log(process.env);
+
 const ormDb = drizzle(sql);
 const sqlDb = sql;
 export {ormDb, sqlDb};
