@@ -6,14 +6,14 @@ import {PostTable} from "~/model/post";
 
 export const useNewPost = routeAction$(async (data, requestEvent) => {
   const token = requestEvent.cookie.get('token')?.value;
-  if (!token || (await db().sql`SELECT COUNT(*)
+  if (!token || (await db.sql`SELECT COUNT(*)
                              FROM admin_token
                              WHERE token = ${token}
-                               AND expired_at > CURRENT_TIMESTAMP`).rowCount < 1)
+                               AND expires_at > CURRENT_TIMESTAMP`).rowCount < 1)
     return requestEvent.fail(401, {error: 'Unauthorized'});
 
   //return ormDb.insert(AdminTokenTable).values({token: token, expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365)}).returning({id: Admin});
-  const res = await ormDb().insert(PostTable).values(data).returning({id: PostTable.id});
+  const res = await ormDb.insert(PostTable).values(data).returning({id: PostTable.id});
   return res[0];
 }, zod$({
   preview_image: z.string().url("Preview image must be a valid URL"),

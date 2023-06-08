@@ -11,7 +11,7 @@ export default component$((props: { posts: PreviewPost[], containerClass?: strin
       {props.posts.map((post) => (
         <Link key={post.id} class="hover:translate-y-1" href={"/blog/posts/" + post.id}>
           <div class="overflow-hidden rounded-md bg-slate-800">
-            {post.preview_image != null && (
+            {post.preview_image && (
               <div>
                 <img class="w-full h-40 object-cover object-center"
                      src={post.preview_image}

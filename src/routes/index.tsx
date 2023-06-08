@@ -6,15 +6,14 @@ import Projects from '~/components/projects/projects';
 import PostList from "~/components/post-list/post-list";
 import MyExperience from "~/components/my-experience/my-experience";
 import getProjects from "~/data/projects-data";
-import {allColumnExpect} from "~/prisma-utils";
-import {postColumns, PreviewPost} from "~/model/post";
+import {PreviewPost} from "~/model/post";
 import {db} from "~/root";
 
 export const useLatestPostsLoader = routeLoader$(async () => {
-  const {rows} = await db().sql`SELECT ${allColumnExpect(postColumns(), 'content')}
-                          FROM post
-                          ORDER BY timestamp DESC
-                          LIMIT 6`;
+  const {rows} = await db.sql`SELECT id, title, timestamp, preview_image, preview_content
+                              FROM post
+                              ORDER BY timestamp DESC
+                              LIMIT 6`;
   return rows as PreviewPost[];
 });
 
@@ -66,7 +65,7 @@ export default component$(() => {
         <p class="text-3xl font-bold pb-5">Latest &nbsp;
           <span class="bg-gradient-to-br from-sky-500 to-cyan-400 bg-clip-text text-transparent">Posts</span>
         </p>
-        <PostList posts={posts.value}></PostList>
+        <PostList posts={posts.value ?? []}></PostList>
       </div>
     </div>
   );

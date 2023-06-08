@@ -17,8 +17,11 @@ export const useServerTimeLoader = routeLoader$(() => {
 export const useAdminAuthorization = routeLoader$(async (requestEvent) => {
   // get the token from the cookie
   const token = requestEvent.cookie.get('token')?.value;
-  if(!token) return false;
-  return (await db().sql`SELECT COUNT(*)FROM admin_token WHERE token=${token} AND expired_at > CURRENT_TIMESTAMP`).rowCount >= 1;
+  if (!token) return false;
+  return (await db.sql`SELECT COUNT(*)
+                       FROM admin_token
+                       WHERE token = ${token}
+                         AND expires_at > CURRENT_TIMESTAMP`).rowCount >= 1;
 });
 
 export default component$(() => {
@@ -29,12 +32,12 @@ export default component$(() => {
   return (
     <div class="flex flex-col min-h-screen">
       <div class="px-20 pt-6 pb-4">
-        {!loc.url.pathname.startsWith("/blog") ? <Header /> : <HeaderBlog is_admin={isAdmin.value} />}
+        {!loc.url.pathname.startsWith("/blog") ? <Header/> : <HeaderBlog is_admin={isAdmin.value}/>}
       </div>
       <main class="flex-auto">
-        <Slot />
+        <Slot/>
       </main>
-      <Footer />
+      <Footer/>
     </div>
   );
 });

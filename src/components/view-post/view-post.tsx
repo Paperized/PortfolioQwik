@@ -3,9 +3,8 @@ import type {Post} from "~/model/post";
 
 export default component$((props: { post: Post }) => {
   return (
-    // trigger vercel deploy
     <div class="w-full flex flex-col">
-      {props.post.preview_image != null && (
+      {props.post.preview_image && (
         <img class="h-60 object-cover object-center mx-auto" src={props.post.preview_image} alt="Image"/>
       )}
       <div class="p-6">

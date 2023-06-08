@@ -4,13 +4,14 @@ import {qwikCity} from '@builder.io/qwik-city/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(({mode}) => {
+  /*
   if(mode == 'ssr') {
     const result = require('dotenv').config({path: __dirname + '/.env.development.local'})
 
     if (result.error) {
       throw result.error
     }
-  }
+  }*/
 
   return {
     plugins: [qwikCity(), qwikVite(), tsconfigPaths()],
