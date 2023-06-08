@@ -9,12 +9,12 @@ export const useAdminAuthorization = routeLoader$(async (requestEvent) => {
   // get the token from the cookie
   const token = requestEvent.cookie.get('token')?.value;
   if (!token) return false;
-  return (await db.sql`SELECT COUNT(*) FROM admin_token WHERE token=${token} AND expired_at > CURRENT_TIMESTAMP`).rowCount >= 1;
+  return (await db().sql`SELECT COUNT(*) FROM admin_token WHERE token=${token} AND expired_at > CURRENT_TIMESTAMP`).rowCount >= 1;
 });
 
 export const usePost = routeLoader$(async(requestEvent) => {
   const postId = +requestEvent.params.postId;
-  const res = await ormDb.select().from(PostTable).where(eq(PostTable.id, postId));
+  const res = await ormDb().select().from(PostTable).where(eq(PostTable.id, postId));
   return res.length > 0 ? res[0] : null;
 });
 

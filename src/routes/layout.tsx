@@ -18,7 +18,7 @@ export const useAdminAuthorization = routeLoader$(async (requestEvent) => {
   // get the token from the cookie
   const token = requestEvent.cookie.get('token')?.value;
   if(!token) return false;
-  return (await db.sql`SELECT COUNT(*)FROM admin_token WHERE token=${token}AND expired_at > CURRENT_TIMESTAMP`).rowCount >= 1;
+  return (await db().sql`SELECT COUNT(*)FROM admin_token WHERE token=${token} AND expired_at > CURRENT_TIMESTAMP`).rowCount >= 1;
 });
 
 export default component$(() => {

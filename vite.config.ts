@@ -10,16 +10,6 @@ export default defineConfig(({mode}) => {
     if (result.error) {
       throw result.error
     }
-
-    console.log(result.parsed)
-  } else {
-    const result = require('dotenv').config({path: __dirname + '/.env'})
-
-    if (result.error) {
-      throw result.error
-    }
-
-    console.log("prod!!!");
   }
 
   return {

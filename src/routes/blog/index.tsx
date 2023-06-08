@@ -11,11 +11,11 @@ export const usePreviewPosts = routeLoader$(async (requestEvent) => {
   if (page < 1) page = 1;
   const postPerPage = 10;
   const skipCount = (page - 1) * postPerPage;
-  const resultPost = await db.sql`SELECT ${allColumnExpect(postColumns(), 'content')}
+  const resultPost = await db().sql`SELECT ${allColumnExpect(postColumns(), 'content')}
                               FROM post
                               ORDER BY timestamp DESC
                               LIMIT ${postPerPage} OFFSET ${skipCount}`;
-  const resultCount = await db.sql`SELECT COUNT(*)FROM post`;
+  const resultCount = await db().sql`SELECT COUNT(*)FROM post`;
 
   return {posts: resultPost.rows as PreviewPost[], page, count: resultCount.rows[0].count};
 });

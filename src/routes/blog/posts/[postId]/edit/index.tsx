@@ -1,24 +1,24 @@
 import {component$} from "@builder.io/qwik";
 import {Form, routeAction$, routeLoader$, z, zod$} from "@builder.io/qwik-city";
-import {ormDb, db} from "~/root";
+import {db, ormDb} from "~/root";
 import {PostTable} from "~/model/post";
 import {eq} from "drizzle-orm";
 
 export const usePost = routeLoader$(async (requestEvent) => {
   const postId = +requestEvent.params.postId;
-  const res = await ormDb.select().from(PostTable).where(eq(PostTable.id, postId));
+  const res = await ormDb().select().from(PostTable).where(eq(PostTable.id, postId));
   return res.length > 0 ? res[0] : null;
 });
 
 export const useEditPost = routeAction$(async (data, requestEvent) => {
   const token = requestEvent.cookie.get('token')?.value;
-  if (!token || (await db.sql`SELECT COUNT(*)
-                             FROM admin_token
-                             WHERE token = ${token}
-                               AND expired_at > CURRENT_TIMESTAMP`).rowCount < 1)
+  if (!token || (await db().sql`SELECT COUNT(*)
+                                FROM admin_token
+                                WHERE token = ${token}
+                                  AND expired_at > CURRENT_TIMESTAMP`).rowCount < 1)
     return requestEvent.fail(401, {error: 'Unauthorized'});
 
-  const res = await ormDb.update(PostTable).set(data).where(eq(PostTable.id, +requestEvent.params.postId)).returning({id: PostTable.id});
+  const res = await ormDb().update(PostTable).set(data).where(eq(PostTable.id, +requestEvent.params.postId)).returning({id: PostTable.id});
   return res.length > 0 ? res[0] : null;
 }, zod$({
   preview_image: z.string().url("Preview image must be a valid URL"),
@@ -29,13 +29,13 @@ export const useEditPost = routeAction$(async (data, requestEvent) => {
 
 export const useDeletePost = routeAction$(async (_, requestEvent) => {
   const token = requestEvent.cookie.get('token')?.value;
-  if (!token || (await db.sql`SELECT COUNT(*)
-                             FROM admin_token
-                             WHERE token = ${token}
-                               AND expired_at > CURRENT_TIMESTAMP`).rowCount < 1)
+  if (!token || (await db().sql`SELECT COUNT(*)
+                                FROM admin_token
+                                WHERE token = ${token}
+                                  AND expired_at > CURRENT_TIMESTAMP`).rowCount < 1)
     return requestEvent.fail(401, {error: 'Unauthorized'});
 
-  const res = await ormDb.delete(PostTable).where(eq(PostTable.id, +requestEvent.params.postId)).returning({id: PostTable.id});
+  const res = await ormDb().delete(PostTable).where(eq(PostTable.id, +requestEvent.params.postId)).returning({id: PostTable.id});
   return res.length > 0 ? res[0] : null;
 });
 

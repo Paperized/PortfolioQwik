@@ -11,7 +11,7 @@ import {postColumns, PreviewPost} from "~/model/post";
 import {db} from "~/root";
 
 export const useLatestPostsLoader = routeLoader$(async () => {
-  const {rows} = await db.sql`SELECT ${allColumnExpect(postColumns(), 'content')}
+  const {rows} = await db().sql`SELECT ${allColumnExpect(postColumns(), 'content')}
                           FROM post
                           ORDER BY timestamp DESC
                           LIMIT 6`;
