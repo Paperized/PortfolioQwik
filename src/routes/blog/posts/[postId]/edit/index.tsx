@@ -1,4 +1,4 @@
-import {$, component$, useSignal} from "@builder.io/qwik";
+import {$, component$, QRL, useSignal} from "@builder.io/qwik";
 import {Form, routeAction$, routeLoader$, z, zod$} from "@builder.io/qwik-city";
 import {db, ormDb} from "~/root";
 import {PostTable} from "~/model/post";
@@ -57,9 +57,11 @@ export default component$(() => {
   const title = useSignal(post.value.title);
   const content = useSignal(post.value.content);
   const previewContent = useSignal(post.value.preview_content);
-  const event = { onUpdateContent: $((text: string) => {})};
+  const event: { onUpdateContent: QRL<(text: string) => void> | undefined } = { onUpdateContent: undefined };
 
-  const refreshPreview = $(() => event.onUpdateContent(content.value));
+  const refreshPreview = $(() => {
+    if(event.onUpdateContent) event.onUpdateContent(content.value);
+  });
 
   return (
     <div class="flex flex-col md:w-10/12 mx-auto md:p-10">

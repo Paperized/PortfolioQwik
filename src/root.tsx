@@ -6,7 +6,7 @@ import './global.css';
 import {createPool} from "@vercel/postgres";
 import {drizzle} from "drizzle-orm/vercel-postgres";
 
-export const db = createPool({connectionString: process.env['POSTGRES_URL']});
+export const db = createPool({connectionString: process.env['POSTGRES_URL'] });
 export const ormDb = drizzle(db);
 
 export default component$(() => {

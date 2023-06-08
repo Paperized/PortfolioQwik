@@ -1,7 +1,7 @@
-import {$, component$, useVisibleTask$} from "@builder.io/qwik";
+import {$, component$, QRL, useVisibleTask$} from "@builder.io/qwik";
 import type {Post} from "~/model/post";
 
-export default component$((props: { post: Post, event?: { onUpdateContent: (text: string) => void} }) => {
+export default component$((props: { post: Post, event?: { onUpdateContent: QRL<(text: string) => void> | undefined } }) => {
 
   useVisibleTask$(() => {
     const updateContentText = $((text: string) => {
