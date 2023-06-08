@@ -31,7 +31,7 @@ export default component$(() => {
 
   return (
     <div class="flex flex-col md:w-10/12 mx-auto md:p-10">
-      <PostList posts={posts.value.posts} containerClass="grid grid-cols-2 gap-6"></PostList>
+      <PostList posts={posts.value.posts} containerClass="grid-cols-1 md:grid-cols-2 gap-6"></PostList>
       {posts.value.count && (<nav class="flex">
         <ul class="inline-flex items-center -space-x-px mx-auto mt-5">
           <li>
