@@ -1,5 +1,6 @@
 import {component$} from "@builder.io/qwik";
 import type {Project} from "~/model/project";
+import {getTagColor} from "~/data/projects-data";
 
 export default component$((props: { projects: Project[] }) => {
   return (
@@ -26,7 +27,7 @@ export default component$((props: { projects: Project[] }) => {
             <div class="flex flex-wrap gap-x-2 gap-y-1 pt-1">
               {project.tags.map((tag) => (
                 <span key={tag}
-                  class="rounded-md px-2 py-1 text-xs font-semibold bg-fuchsia-400 text-fuchsia-900">{tag}</span>
+                  class={["rounded-md px-2 py-1 text-xs font-semibold"]} style={`background-color: ${getTagColor(tag)}`}>{tag}</span>
               ))}
             </div>
           </div>

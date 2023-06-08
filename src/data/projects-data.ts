@@ -35,3 +35,17 @@ project_list.push({
   tags: ["Java", "Android", "ROOM with LiveData", "Fragments", "GPS/StepCounter/MediaGallery"], project_owner: "University Project" });
 
 export default function getProjects(): Project[] { return [...project_list]; }
+
+const tagsColors: Map<string, string> = new Map();
+
+const langColor = "#3776AB";
+const libColor = "#ad677a";
+const otherColor = "#b05ec8";
+
+["Python", "Java", "Java 1.6", "C"].forEach((lang) => tagsColors.set(lang, langColor));
+["Angular", "Selenium", "Spring Boot", "Google Maps API", "JSF",
+  "Android", "ROOM with LiveData", "Fragments", "GPS/StepCounter/MediaGallery"].forEach((lib) => tagsColors.set(lib, libColor));
+["Web Scraping", "AWS Lambda", "Docker", "Microservices", "Oracle SQL",
+  "Multithread", "NIO Sockets", "RMI", "Multicast", "Unix", "Makefile"].forEach((other) => tagsColors.set(other, otherColor));
+
+export const getTagColor = (tag: string): string => tagsColors.get(tag) || "#000000";
