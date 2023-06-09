@@ -5,6 +5,8 @@ import {RouterHead} from './components/router-head/router-head';
 import './global.css';
 import {createPool} from "@vercel/postgres";
 import {drizzle} from "drizzle-orm/vercel-postgres";
+import {QwikPartytown} from "~/components/partytown/partytown";
+import {PartytownForwardProperty} from "@builder.io/partytown/integration";
 
 export const db = createPool({connectionString: process.env['POSTGRES_URL'] });
 export const ormDb = drizzle(db);
@@ -21,9 +23,14 @@ export default component$(() => {
     <QwikCityProvider>
       <head>
         <meta charSet="utf-8"/>
-        <meta name="viewport" content="width=device-width,initial-scale=1"/>
         <link rel="manifest" href="/manifest.json"/>
         <RouterHead/>
+        <QwikPartytown forward={['dataLayer.push']} />
+        <script
+          async
+          type="text/partytown"
+          src="https://www.googletagmanager.com/gtag/js?id=G-3ZW74CT0YX"
+        />
       </head>
       <body lang="en">
       <RouterOutlet/>
