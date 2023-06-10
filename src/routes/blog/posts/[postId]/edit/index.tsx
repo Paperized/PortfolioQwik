@@ -13,10 +13,10 @@ export const usePost = routeLoader$(async (requestEvent) => {
 
 export const useEditPost = routeAction$(async (data, requestEvent) => {
   const token = requestEvent.cookie.get('token')?.value;
-  if (!token || (await db.sql`SELECT COUNT(*)
+  if (!token || (await db.sql`SELECT token
                               FROM admin_token
                               WHERE token = ${token}
-                                AND expires_at > CURRENT_TIMESTAMP`).rowCount < 1)
+                                AND expires_at > CURRENT_TIMESTAMP`).rowCount == 0)
     return requestEvent.fail(401, {error: 'Unauthorized'});
 
   const res = await ormDb.update(PostTable).set(data).where(eq(PostTable.id, +requestEvent.params.postId)).returning({id: PostTable.id});
@@ -30,10 +30,10 @@ export const useEditPost = routeAction$(async (data, requestEvent) => {
 
 export const useDeletePost = routeAction$(async (_, requestEvent) => {
   const token = requestEvent.cookie.get('token')?.value;
-  if (!token || (await db.sql`SELECT COUNT(*)
+  if (!token || (await db.sql`SELECT token
                               FROM admin_token
                               WHERE token = ${token}
-                                AND expired_at > CURRENT_TIMESTAMP`).rowCount < 1)
+                                AND expired_at > CURRENT_TIMESTAMP`).rowCount == 0)
     return requestEvent.fail(401, {error: 'Unauthorized'});
 
   const res = await ormDb.delete(PostTable).where(eq(PostTable.id, +requestEvent.params.postId)).returning({id: PostTable.id});

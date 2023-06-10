@@ -6,10 +6,10 @@ import {PostTable} from "~/model/post";
 
 export const useNewPost = routeAction$(async (data, requestEvent) => {
   const token = requestEvent.cookie.get('token')?.value;
-  if (!token || (await db.sql`SELECT COUNT(*)
+  if (!token || (await db.sql`SELECT token
                              FROM admin_token
                              WHERE token = ${token}
-                               AND expires_at > CURRENT_TIMESTAMP`).rowCount < 1)
+                               AND expires_at > CURRENT_TIMESTAMP`).rowCount == 0)
     return requestEvent.fail(401, {error: 'Unauthorized'});
 
   //return ormDb.insert(AdminTokenTable).values({token: token, expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365)}).returning({id: Admin});

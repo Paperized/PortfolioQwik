@@ -16,7 +16,7 @@ export const usePreviewPosts = routeLoader$(async (requestEvent) => {
                               LIMIT ${postPerPage} OFFSET ${skipCount}`;
   const resultCount = await db.sql`SELECT COUNT(*) FROM post`;
 
-  return {posts: resultPost.rows as PreviewPost[], page, count: resultCount.rows[0].count};
+  return {posts: resultPost.rows as PreviewPost[], page, count: +resultCount.rows[0].count};
 });
 
 export default component$(() => {

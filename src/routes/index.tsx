@@ -14,6 +14,7 @@ export const useLatestPostsLoader = routeLoader$(async () => {
                               FROM post
                               ORDER BY timestamp DESC
                               LIMIT 6`;
+
   return rows as PreviewPost[];
 });
 

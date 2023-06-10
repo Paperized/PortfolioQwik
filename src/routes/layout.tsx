@@ -6,7 +6,9 @@ import Footer from '~/components/footer/footer';
 
 import styles from './styles.css?inline';
 import HeaderBlog from "~/components/header/header-blog";
-import {db} from "~/root";
+import {ormDb} from "~/root";
+import {AdminTokenTable} from "~/model/post";
+import {and, eq, gt, sql} from "drizzle-orm";
 
 export const useServerTimeLoader = routeLoader$(() => {
   return {
@@ -18,10 +20,12 @@ export const useAdminAuthorization = routeLoader$(async (requestEvent) => {
   // get the token from the cookie
   const token = requestEvent.cookie.get('token')?.value;
   if (!token) return false;
-  return (await db.sql`SELECT COUNT(*)
-                       FROM admin_token
-                       WHERE token = ${token}
-                         AND expires_at > CURRENT_TIMESTAMP`).rowCount >= 1;
+  return (await ormDb.select({
+    count: sql<number>`count
+        (*)`
+  })
+    .from(AdminTokenTable)
+    .where(and(eq(AdminTokenTable.token, token), gt(AdminTokenTable.expiresAt, new Date()))))[0].count > 0;
 });
 
 export default component$(() => {
