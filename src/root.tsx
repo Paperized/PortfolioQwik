@@ -6,7 +6,6 @@ import './global.css';
 import {createPool} from "@vercel/postgres";
 import {drizzle} from "drizzle-orm/vercel-postgres";
 import {QwikPartytown} from "~/components/partytown/partytown";
-import {AdminTokenTable} from "~/model/post";
 
 export const db = createPool({connectionString: process.env['POSTGRES_URL']});
 export const ormDb = drizzle(db);
