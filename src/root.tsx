@@ -21,14 +21,11 @@ export default component$(() => {
   return (
     <QwikCityProvider>
       <head>
-        <meta charSet="utf-8"/>
-        <link rel="manifest" href="/manifest.json"/>
-        <RouterHead/>
         <QwikPartytown forward={['dataLayer.push']}/>
         <script
           async
           type="text/partytown"
-          src="https://www.googletagmanager.com/gtag/js?id=G-3ZW74CT0YX"
+          src="https://www.googletagmanager.com/gtag/js?id=G-12EP7NED72"
         />
         <script
           type="text/partytown"
@@ -36,8 +33,13 @@ export default component$(() => {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-3ZW74CT0YX');`}>
+            
+            gtag('config', 'G-12EP7NED72');`}>
         </script>
+
+        <meta charSet="utf-8"/>
+        <link rel="manifest" href="/manifest.json"/>
+        <RouterHead/>
       </head>
       <body lang="en">
       <RouterOutlet/>
