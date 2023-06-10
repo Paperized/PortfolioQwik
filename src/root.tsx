@@ -36,7 +36,8 @@ export default component$(() => {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-3ZW74CT0YX');`}/>
+            gtag('config', 'G-3ZW74CT0YX');`}>
+        </script>
       </head>
       <body lang="en">
       <RouterOutlet/>
