@@ -30,6 +30,13 @@ export default component$(() => {
           type="text/partytown"
           src="https://www.googletagmanager.com/gtag/js?id=G-3ZW74CT0YX"
         />
+        <script
+          type="text/partytown"
+          dangerouslySetInnerHTML={`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '3ZW74CT0YX');`}/>
       </head>
       <body lang="en">
       <RouterOutlet/>
