@@ -5,13 +5,11 @@ export default component$((props: { post: Post, event?: { onUpdateContent: QRL<(
 
   useVisibleTask$(() => {
     const updateContentText = $((text: string) => {
-      console.log(text);
       const contentElement = document.getElementById('content-post')!;
       contentElement.innerHTML = text;
       const targetElements = contentElement.querySelectorAll('[unrendered]');
 
       targetElements.forEach((element) => {
-        console.log(element.innerHTML);
         element.textContent = element.innerHTML;
       });
     });
@@ -31,7 +29,9 @@ export default component$((props: { post: Post, event?: { onUpdateContent: QRL<(
       <div class="md:p-6">
         <p class="text-[1.9rem] font-semibold">{props.post.title}</p>
         <p class="text-gray-400 mb-4">{props.post.timestamp?.toDateString()}</p>
-        <p id="content-post"></p>
+        <p id="content-post">
+
+        </p>
       </div>
     </div>
   );
