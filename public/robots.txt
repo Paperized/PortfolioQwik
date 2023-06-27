@@ -4,3 +4,5 @@ Disallow: /blog/posts/*/edit
 Allow: /
 Allow: /blog/posts
 Allow: /blog/posts/*
+
+Sitemap: https://www.paperized-dev.com/sitemap.xml

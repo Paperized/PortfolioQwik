@@ -93,10 +93,6 @@ export const head: DocumentHead = {
       content: 'Paperized Programming Blog, where I write about my experiences and thoughts on programming and software development',
     },
     {
-      name: 'robot',
-      content: 'index, follow',
-    },
-    {
       name: 'og:type',
       content: 'blog',
     }

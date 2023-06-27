@@ -80,10 +80,6 @@ export const head: DocumentHead = {
       content: 'Portfolio and Blog of Paperized (Ivan Lo Greco). Read about my blog posts and projects, everything related to IT, Programming and more.',
     },
     {
-      name: 'robot',
-      content: 'index, follow',
-    },
-    {
       name: 'og:type',
       content: 'website',
     }

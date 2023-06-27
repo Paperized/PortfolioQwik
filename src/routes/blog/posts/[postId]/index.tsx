@@ -67,10 +67,6 @@ export const head: DocumentHead = (p) => {
         content: strippedHtmlPost,
       },
       {
-        name: 'robot',
-        content: 'index, follow',
-      },
-      {
         name: 'og:type',
         content: 'article',
       },
