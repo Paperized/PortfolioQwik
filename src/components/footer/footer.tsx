@@ -7,7 +7,7 @@ export default component$(() => {
 
   return (
     <footer>
-      <div class="container pb-2">
+      <div class="container py-5">
         <a href="#" class={styles.anchor}>
           <span>Made by Ivan Lo Greco using Qwik framework</span>
           <span class={styles.spacer}>|</span>

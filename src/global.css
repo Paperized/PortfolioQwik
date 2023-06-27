@@ -62,6 +62,26 @@ html {
     'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-*[unrendered] {
-  white-space: break-spaces !important;
+.post-content {
+  white-space: pre-line;
+}
+
+.post-content [post-section]:not(:last-child) {
+  border-bottom: 1px solid;
+  border-color: #705f8d;
+  border-bottom-width: medium;
+  padding-bottom: 1rem;
+}
+
+.post-content [post-section] > [title] {
+  font-size: 2rem;
+  font-weight: lighter;
+}
+
+.post-content a {
+  color: #67e0ff;
+}
+
+.post-content a:hover {
+  color: #18b6f6;
 }

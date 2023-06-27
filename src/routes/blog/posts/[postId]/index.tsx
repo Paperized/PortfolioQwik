@@ -58,12 +58,13 @@ export const head: DocumentHead = (p) => {
     return {};
   }
 
+  const strippedHtmlPost = post.preview_content.replace(/<[^>]+>/g, '');
   return {
     title: post.title,
     meta: [
       {
         name: 'description',
-        content: post.preview_content,
+        content: strippedHtmlPost,
       },
       {
         name: 'robot',
@@ -79,7 +80,7 @@ export const head: DocumentHead = (p) => {
       },
       {
         name: 'og:description',
-        content: post.preview_content,
+        content: strippedHtmlPost,
       },
       {
         name: 'og:image',
@@ -87,7 +88,7 @@ export const head: DocumentHead = (p) => {
       },
       {
         name: 'og:url',
-        content: 'https://blog.qwik.dev/blog/posts/' + post.id,
+        content: 'https://paperized-dev.com/blog/posts/' + post.id,
       },
       {
         name: 'og:site_name',

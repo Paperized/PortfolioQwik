@@ -12,7 +12,7 @@ export default component$(() => {
             </a>
             / 3m / Full-time Remote
           </h4>
-          <p class="text-gray-600 pb-2">Oct 2022 - Dec 2022</p>
+          <p class="text-gray-500 pb-2">Oct 2022 - Dec 2022</p>
           <p>Crafted a distinctive Python-based web scraper using Selenium and AWS Lambda, this projects uses
             configuration files to describe pages and uses a custom scripting language to add logic inside those
             files.</p>
@@ -27,7 +27,7 @@ export default component$(() => {
             </a>
             / 1y11m / Full-time
           </h4>
-          <p class="text-gray-600 pb-2">Oct 2017 - Aug 2019</p>
+          <p class="text-gray-500 pb-2">Oct 2017 - Aug 2019</p>
           <p>Started and completed 3 projects in small teams using Agile methodology, Spring Boot, Angular and
             microservices in one project.</p>
           <p>Contributed in a complex project called "Registri" used by AIFA (Italian Medicines Agency).</p>
@@ -42,7 +42,7 @@ export default component$(() => {
             </a>
             / Score: 100/110
           </h4>
-          <p class="text-gray-600 pb-2">September 2019 - May 2023</p>
+          <p class="text-gray-500 pb-2">September 2019 - May 2023</p>
           <p>Algorithms and data structures, Computer Networking, Operative Systems, Databases, Software
             Engineering, Mobile Development, Introduction to AI and Machine Learning.</p>
         </div>
