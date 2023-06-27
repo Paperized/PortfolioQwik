@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /blog/posts/new-post
+Disallow: /blog/posts/*/edit
+Allow: /
+Allow: /blog/posts
+Allow: /blog/posts/*
