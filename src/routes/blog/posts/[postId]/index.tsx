@@ -25,7 +25,7 @@ export default component$(() => {
   const post = usePost();
   if (post.value == null) {
     return (
-      <div class="flex flex-col md:w-10/12 mx-auto md:p-10">
+      <div class="flex flex-col md:w-10/12 mx-auto lg:p-10">
         <h2>Post does not exists!</h2>
       </div>
     );
@@ -34,7 +34,7 @@ export default component$(() => {
   const isAdmin = useAdminAuthorization();
 
   return (
-    <div class="flex flex-col md:w-10/12 mx-auto md:p-10">
+    <div class="flex flex-col md:w-10/12 mx-auto lg:p-10">
       {isAdmin.value &&
           <Link href={"/blog/posts/" + post.value.id + "/edit"}
                 class="fixed bottom-8 right-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full floating-button">

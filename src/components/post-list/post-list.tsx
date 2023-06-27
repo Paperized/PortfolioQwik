@@ -5,12 +5,13 @@ import {Link} from "@builder.io/qwik-city";
 export default component$((props: { posts: PreviewPost[], containerClass?: string }) => {
   return (
     <div class={[
-      "grid",
-      props.containerClass == undefined ? "grid-cols-1 md:grid-cols-3 gap-6" : props.containerClass,
+      "grid gap-6",
+      props.containerClass == undefined ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : props.containerClass,
     ]}>
       {props.posts.map((post) => (
         <Link key={post.id} class="hover:translate-y-1" href={"/blog/posts/" + post.id}>
-          <div class="overflow-hidden rounded-md bg-slate-800">
+          <div class="border-[1px] border-[#9d561fc9] overflow-hidden rounded-md bg-slate-800"
+            style="box-shadow: 2px 1px 13px 2px #9d911f9e;">
             {post.preview_image && (
               <div>
                 <img class="w-full h-40 object-cover object-center"

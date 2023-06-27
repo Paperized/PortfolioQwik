@@ -36,7 +36,7 @@ export default component$(() => {
   });
 
   return (
-    <div class="flex flex-col md:w-10/12 mx-auto md:p-10">
+    <div class="flex flex-col md:w-10/12 mx-auto lg:p-10">
       <h2 class="text-3xl font-semibold mb-4">Create New Post</h2>
       <Form class="shadow-md rounded pt-3 pb-6">
         <div class="mb-4">

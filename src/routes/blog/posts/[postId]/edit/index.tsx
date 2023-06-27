@@ -47,7 +47,7 @@ export default component$(() => {
 
   if (post.value == null) {
     return (
-      <div class="flex flex-col md:w-10/12 mx-auto md:p-10">
+      <div class="flex flex-col md:w-10/12 mx-auto lg:p-10">
         <h2>Post does not exists!</h2>
       </div>
     );
@@ -64,7 +64,7 @@ export default component$(() => {
   });
 
   return (
-    <div class="flex flex-col md:w-10/12 mx-auto md:p-10">
+    <div class="flex flex-col md:w-10/12 mx-auto lg:p-10">
       <div class="flex">
         <h2 class="text-3xl font-semibold mb-4">Edit Post</h2>
         <button onClick$={async () => {
