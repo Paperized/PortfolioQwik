@@ -5,7 +5,7 @@ export default component$((props: { is_admin: boolean }) => {
   return (
     <nav class="bg-transparent">
       <div class="w-full flex flex-wrap items-center justify-between">
-        <Link href="/" class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+        <Link href="/" class="self-center text-2xl font-semibold whitespace-nowrap text-white">
           Ivan Lo Greco
         </Link>
         <div class="flex-auto md:basis-auto basis-full md:flex-grow-[0.5] relative md:order-none order-1">
@@ -20,20 +20,20 @@ export default component$((props: { is_admin: boolean }) => {
             <span class="sr-only">Search icon</span>
           </div>
           <input type="text" id="search-navbar"
-                 class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                 class="block w-full p-2 pl-10 text-sm border rounded-lg bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                  placeholder="Search..."></input>
         </div>
         <div>
           <ul
-            class="flex md:p-0 font-light border-gray-100 rounded-lg space-x-0 md:space-x-8 md:mt-0 border-0 dark:border-gray-700">
+            class="flex md:p-0 font-light rounded-lg space-x-0 md:space-x-8 md:mt-0 border-0 border-gray-700">
             {props.is_admin && (<li>
               <Link href="/blog/posts/new-post"
-                    class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+                    class="block py-2 pl-3 pr-4 rounded md:p-0 md:hover:text-blue-500 text-white hover:bg-gray-700 hover:text-white md:hover:bg-transparent border-gray-700">
                 New Post</Link>
             </li>)}
             <li>
               <Link href="/blog"
-                    class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+                    class="block py-2 pl-3 pr-4 rounded md:p-0 md:hover:text-blue-500 text-white hover:bg-gray-700 hover:text-white md:hover:bg-transparent border-gray-700">
                 All Posts</Link>
             </li>
           </ul>
