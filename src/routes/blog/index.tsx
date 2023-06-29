@@ -36,7 +36,7 @@ export default component$(() => {
         <ul class="inline-flex items-center -space-x-px mx-auto mt-5">
           <li>
             <Link href={posts.value.page > 1 ? "/blog?page=" + (posts.value.page - 1) : undefined}
-               class="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+               class="block px-3 py-2 ml-0 leading-tight border rounded-l-lg bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
               <span class="sr-only">Previous</span>
               <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                    xmlns="http://www.w3.org/2000/svg">
@@ -48,28 +48,28 @@ export default component$(() => {
           </li>
           {posts.value.page - 2 > 0 && (<li>
             <Link href={"/blog?page=" + (posts.value.page - 2)}
-                  class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{posts.value.page - 2}</Link>
+                  class="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">{posts.value.page - 2}</Link>
           </li>)}
           {posts.value.page - 1 > 0 && (<li>
             <Link href={"/blog?page=" + (posts.value.page - 1)}
-                  class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{posts.value.page - 1}</Link>
+                  class="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">{posts.value.page - 1}</Link>
           </li>)}
           <li>
             <a aria-current="page"
-               class="px-3 py-2 leading-tight text-gray-100 border hover:bg-gray-700  bg-gray-800 border-gray-700 hover:text-white">{posts.value.page}</a>
+               class="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">{posts.value.page}</a>
           </li>
           {posts.value.page + 1 <= totalPages && (<li>
             <Link href={"/blog?page=" + (posts.value.page + 1)}
-                  class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{posts.value.page + 1}</Link>
+                  class="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">{posts.value.page + 1}</Link>
           </li>)}
           {posts.value.page + 2 <= totalPages && (<li>
               <Link href={"/blog?page=" + (posts.value.page + 2)}
-                    class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{posts.value.page + 2}</Link>
+                    class="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">{posts.value.page + 2}</Link>
             </li>
           )}
           <li>
             <Link href={posts.value.page < totalPages ? "/blog?page=" + (posts.value.page + 1) : undefined}
-               class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+               class="block px-3 py-2 leading-tight border rounded-r-lg bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
               <span class="sr-only">Next</span>
               <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                    xmlns="http://www.w3.org/2000/svg">

@@ -51,8 +51,8 @@ export default component$((props: {
         <img class="w-full h-60 object-cover object-center mx-auto" src={props.post.preview_image} alt="Image"/>
       )}
 
-      <div class="md:p-6">
-        <p class="text-[1.9rem] font-semibold">{props.post.title}</p>
+      <div class="lg:p-6">
+        <p class="text-[1.9rem] font-semibold mt-4 lg:mt-0">{props.post.title}</p>
         <div class="mb-4 flex flex-row items-baseline">
           <span class="text-gray-400">{props.post.timestamp?.toDateString()}</span>
           <button onClick$={sharePost} class="hover:translate-y-1 ml-4 border-[2px] border-[#5ca2ff] rounded-[10px] p-1 flex flex-row color text-[#5ca2ff]">
