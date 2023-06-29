@@ -66,8 +66,9 @@ export default component$(() => {
   useVisibleTask$( () => {
     function typeInTextarea(newText: string, el = document.getElementById('content')) {
       if (!el) return;
-      const [start, end] = [el.selectionStart, el.selectionEnd];
-      el.setRangeText(newText, start, end, 'select');
+      const elAsAny = el as any;
+      const [start, end] = [elAsAny.selectionStart, elAsAny.selectionEnd];
+      elAsAny.setRangeText(newText, start, end, 'select');
     }
 
     document.onkeydown = (e) => {
