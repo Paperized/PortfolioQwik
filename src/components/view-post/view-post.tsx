@@ -1,7 +1,7 @@
 import {$, component$, QRL, useVisibleTask$} from "@builder.io/qwik";
 import type {Post} from "~/model/post";
 
-declare var hljs: any;
+declare let hljs: any;
 
 export default component$((props: {
   post: Post,

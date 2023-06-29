@@ -75,7 +75,7 @@ export default component$(() => {
       if (e.key === 'q' && e.ctrlKey) {
         e.preventDefault();
         typeInTextarea(
-          `<pre><code class=\"\" unrendered>
+          `<pre><code class="" unrendered>
 
 </code></pre>`)
       }
