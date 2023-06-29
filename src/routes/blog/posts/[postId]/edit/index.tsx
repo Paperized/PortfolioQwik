@@ -1,4 +1,4 @@
-import {$, component$, QRL, useSignal} from "@builder.io/qwik";
+import {$, component$, QRL, useSignal, useVisibleTask$} from "@builder.io/qwik";
 import {Form, routeAction$, routeLoader$, z, zod$} from "@builder.io/qwik-city";
 import {db, ormDb} from "~/root";
 import {PostTable} from "~/model/post";
@@ -63,6 +63,24 @@ export default component$(() => {
     if(event.onUpdateContent) event.onUpdateContent(content.value);
   });
 
+  useVisibleTask$( () => {
+    function typeInTextarea(newText: string, el = document.getElementById('content')) {
+      if (!el) return;
+      const [start, end] = [el.selectionStart, el.selectionEnd];
+      el.setRangeText(newText, start, end, 'select');
+    }
+
+    document.onkeydown = (e) => {
+      if (e.key === 'q' && e.ctrlKey) {
+        e.preventDefault();
+        typeInTextarea(
+          `<pre><code class=\"\" unrendered>
+
+</code></pre>`)
+      }
+    }
+  }, {strategy: 'document-ready'});
+
   return (
     <div class="flex flex-col md:w-10/12 mx-auto lg:p-10">
       <div class="flex">
@@ -123,7 +141,7 @@ export default component$(() => {
           <label class="block text-sm font-bold mb-2" for="description">Description</label>
           <textarea
             class="min-h-[10rem] block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            name="content" placeholder="Enter description" bind:value={content}  onChange$={refreshPreview}></textarea>
+            id="content" placeholder="Enter description" bind:value={content}  onChange$={refreshPreview}></textarea>
           {editPostAction.value?.failed && <p>{editPostAction.value.fieldErrors?.content}</p>}
         </div>
         {post.value?.id && <a href={"/blog/posts/" + post.value.id} target="_blank">View Post</a>}

@@ -85,3 +85,8 @@ html {
 .post-content a:hover {
   color: #18b6f6;
 }
+
+.post-content pre:has(code) {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}

@@ -22,8 +22,10 @@ export const RouterHead = component$(() => {
       <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"/>
       <meta name="msapplication-TileColor" content="#da532c"/>
       <meta name="theme-color" content="#000000"/>
-
       <meta name="robots" content="index, follow"/>
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/base16/helios.min.css"/>
+      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
 
       {head.meta.map((m) => (
         <meta key={m.key} {...m} />

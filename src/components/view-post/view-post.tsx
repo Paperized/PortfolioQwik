@@ -1,6 +1,8 @@
 import {$, component$, QRL, useVisibleTask$} from "@builder.io/qwik";
 import type {Post} from "~/model/post";
 
+declare var hljs: any;
+
 export default component$((props: {
   post: Post,
   event?: { onUpdateContent: QRL<(text: string) => void> | undefined }
@@ -10,11 +12,23 @@ export default component$((props: {
     const updateContentText = $((text: string) => {
       const contentElement = document.getElementById('content-post')!;
       contentElement.innerHTML = text;
-      const targetElements = contentElement.querySelectorAll('[unrendered]');
+      const targetElements = contentElement.getElementsByTagName('*');
 
-      targetElements.forEach((element) => {
-        element.textContent = element.innerHTML;
-      });
+      for(let i = 0; i < targetElements.length; i++) {
+        const element = targetElements[i];
+
+        const startsWithIndex = element.innerHTML?.at(0) === '\n' ? 1 : 0;
+        const endsWithIndex = element.innerHTML?.at(element.innerHTML.length - 1) === '\n' ?
+          element.innerHTML.length - 1 : element.innerHTML.length;
+        const needsSubstring = startsWithIndex !== 0 || endsWithIndex !== element.innerHTML.length;
+
+        if(element.hasAttribute('unrendered'))
+          element.textContent = needsSubstring ? element.innerHTML.substring(startsWithIndex, endsWithIndex) : element.innerHTML;
+        else
+          element.innerHTML = needsSubstring ? element.innerHTML.substring(startsWithIndex, endsWithIndex) : element.innerHTML;
+      }
+
+      hljs.highlightAll();
     });
 
     if (props.event !== undefined) {
@@ -34,7 +48,7 @@ export default component$((props: {
   return (
     <div class="w-full flex flex-col">
       {props.post.preview_image && (
-        <img class="h-60 object-cover object-center mx-auto" src={props.post.preview_image} alt="Image"/>
+        <img class="w-full h-60 object-cover object-center mx-auto" src={props.post.preview_image} alt="Image"/>
       )}
 
       <div class="md:p-6">
